@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  ezaudit-lambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: handler
+      CodeUri: .
+      Handler: app.handler
+      Runtime: nodejs18.x
+      Description: ""
+      Layers:
+        - !Ref NodeLayer
+      MemorySize: 2048
+      Timeout: 60
+
+  NodeLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: aws-deps
+      Description: AWS NPM Dependencies
+      ContentUri: nodejs
+      CompatibleRuntimes:
+        - nodejs18.x
+      LicenseInfo: "MIT"
+      RetentionPolicy: Retain

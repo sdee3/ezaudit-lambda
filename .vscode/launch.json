@@ -3,17 +3,21 @@
     {
       "type": "aws-sam",
       "request": "direct-invoke",
-      "name": "ezaudit-lambda:app.handler (nodejs18.x)",
+      "name": "ezaudit-lambda:ezaudit-lambda",
       "invokeTarget": {
-        "target": "code",
-        "projectRoot": "${workspaceFolder}/",
-        "lambdaHandler": "app.handler"
+        "target": "template",
+        "templatePath": "${workspaceFolder}/template.yaml",
+        "logicalId": "ezaudit-lambda"
       },
       "lambda": {
         "memoryMb": 1024,
         "timeoutSec": 120,
         "runtime": "nodejs18.x",
-        "payload": {},
+        "payload": {
+          "json": {
+            "url": "https://facebook.com"
+          }
+        },
         "environmentVariables": {}
       }
     }
