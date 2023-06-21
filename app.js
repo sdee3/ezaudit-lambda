@@ -1,8 +1,9 @@
 const puppeteer = require("puppeteer-core")
 const chromium = require("@sparticuz/chromium")
-const lighthouse = require("lighthouse")
 
 exports.handler = async (event, context, callback) => {
+  const lighthouse = await import("lighthouse")
+
   const browser = await puppeteer.launch({
     args: [
       ...chromium.args,
@@ -18,7 +19,7 @@ exports.handler = async (event, context, callback) => {
     ignoreHTTPSErrors: true,
   })
 
-  const runnerResult = await lighthouse("https://news.ycombinator.com/", {
+  const runnerResult = await lighthouse.default(event.url, {
     logLevel: "info",
     output: "json",
     onlyCategories: ["performance"],

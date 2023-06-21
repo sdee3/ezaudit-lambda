@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
-  ezaudit-lambda:
+  EZAuditLambda:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: handler
@@ -11,16 +11,40 @@ Resources:
       Runtime: nodejs18.x
       Description: ""
       Layers:
-        - !Ref NodeLayer
+        - !Ref ChromiumLayer
+        - !Ref LighthouseLayer
+        - !Ref PuppeteerLayer
       MemorySize: 2048
       Timeout: 60
 
-  NodeLayer:
+  ChromiumLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: aws-deps
+      LayerName: chromium
       Description: AWS NPM Dependencies
-      ContentUri: nodejs
+      ContentUri: "chromium/nodejs"
+      CompatibleRuntimes:
+        - nodejs18.x
+      LicenseInfo: "MIT"
+      RetentionPolicy: Retain
+
+  LighthouseLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: lighthouse
+      Description: AWS NPM Dependencies
+      ContentUri: "lighthouse/nodejs"
+      CompatibleRuntimes:
+        - nodejs18.x
+      LicenseInfo: "MIT"
+      RetentionPolicy: Retain
+
+  PuppeteerLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: puppeteer
+      Description: AWS NPM Dependencies
+      ContentUri: "puppeteer/nodejs"
       CompatibleRuntimes:
         - nodejs18.x
       LicenseInfo: "MIT"
