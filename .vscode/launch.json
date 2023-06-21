@@ -12,8 +12,10 @@
       "lambda": {
         "payload": {
           "json": {
-            "url": "https://facebook.com",
-            "email": "stefd996@gmail.com"
+            "headers": {
+              "url": "https://facebook.com",
+              "email": "stefd996@gmail.com"
+            }
           }
         },
         "environmentVariables": {},

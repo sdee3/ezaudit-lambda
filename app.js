@@ -2,6 +2,12 @@ const puppeteer = require("puppeteer-core")
 const chromium = require("@sparticuz/chromium")
 
 exports.handler = async (event, context, callback) => {
+  if (!event.headers["url"] || !event.headers["email"]) {
+    callback(null, {
+      error: "Missing header params (url, email)!",
+    })
+  }
+
   const lighthouse = await import("lighthouse")
 
   const browser = await puppeteer.launch({
@@ -19,7 +25,7 @@ exports.handler = async (event, context, callback) => {
     ignoreHTTPSErrors: true,
   })
 
-  const runnerResult = await lighthouse.default(event.url, {
+  const runnerResult = await lighthouse.default(event.headers["url"], {
     logLevel: "info",
     output: "json",
     onlyCategories: ["performance"],
