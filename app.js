@@ -1,12 +1,8 @@
-const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium");
+const puppeteer = require("puppeteer-core")
+const chromium = require("@sparticuz/chromium")
+const lighthouse = require("lighthouse")
 
 exports.handler = async (event, context, callback) => {
-  // Optional: If you'd like to use the legacy headless mode. "new" is the default.
-  chromium.setHeadlessMode = true;
-
-  const lighthouse = await import("lighthouse");
-
   const browser = await puppeteer.launch({
     args: [
       ...chromium.args,
@@ -20,19 +16,16 @@ exports.handler = async (event, context, callback) => {
     executablePath: await chromium.executablePath(),
     headless: "new",
     ignoreHTTPSErrors: true,
-  });
+  })
 
-  const runnerResult = await lighthouse.default(
-    "https://news.ycombinator.com/",
-    {
-      logLevel: "info",
-      output: "json",
-      onlyCategories: ["performance"],
-      port: browser.port,
-    }
-  );
+  const runnerResult = await lighthouse("https://news.ycombinator.com/", {
+    logLevel: "info",
+    output: "json",
+    onlyCategories: ["performance"],
+    port: browser.port,
+  })
 
-  await browser.close();
+  await browser.close()
 
-  callback(null, runnerResult.report);
-};
+  callback(null, runnerResult.report)
+}

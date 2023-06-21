@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@sparticuz/chromium": "^114.0.0",
     "lighthouse": "^10.1.0",
     "puppeteer-core": "^20.7.2"
