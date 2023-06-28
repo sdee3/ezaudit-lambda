@@ -28,7 +28,6 @@ exports.handler = async (event, context, callback) => {
   const runnerResult = await lighthouse.default(event.headers["url"], {
     logLevel: "info",
     output: "json",
-    onlyCategories: ["performance"],
     port: browser.port,
   })
 
