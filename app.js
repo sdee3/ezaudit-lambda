@@ -1,3 +1,6 @@
+const { Readable } = require("stream")
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3")
+
 const puppeteer = require("puppeteer-core")
 const chromium = require("@sparticuz/chromium")
 
@@ -33,5 +36,26 @@ exports.handler = async (event, context, callback) => {
 
   await browser.close()
 
-  callback(null, runnerResult.report)
+  try {
+    const client = new S3Client({ region: "eu-central-1" })
+    const buffer = Buffer.from(runnerResult.report)
+    const readable = Readable.from(buffer)
+
+    const params = {
+      Bucket: "ezaudit",
+      Key: `audits/websitejson`,
+      Body: readable,
+      ACL: "bucket-owner-full-control",
+      ContentType: "text/plain",
+      ContentLength: buffer.byteLength,
+    }
+
+    const command = new PutObjectCommand(params)
+
+    await client.send(command)
+
+    callback(null, "Report finished and stored!")
+  } catch (e) {
+    console.error(e)
+  }
 }
