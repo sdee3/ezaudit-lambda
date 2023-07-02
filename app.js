@@ -43,7 +43,7 @@ exports.handler = async (event, context, callback) => {
 
     const params = {
       Bucket: "ezaudit",
-      Key: `audits/websitejson`,
+      Key: `audits/website.json`,
       Body: readable,
       ACL: "bucket-owner-full-control",
       ContentType: "text/plain",
